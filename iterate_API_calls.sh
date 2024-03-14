@@ -7,12 +7,14 @@ CSV_FILE="/path/to/csv"
 API_KEY="api_key"
 PORT="8000"
 ADDRESS="http://000.000.0.000"
+BUCKET_NAME="bucket_name"
+BUCKET_FOLDER="bucket_folder"
 
 # Read the .csv line by line and extract fields (order matters)
 tail -n +2 "$CSV_FILE" | while IFS=, read -r mriid gender age brain_vol ventricular_vol; do
   # API call
   curl -X 'POST' \
-    "$ADDRESS/generategenderageventbrainvol" \
+    "$ADDRESS:$PORT/generategenderageventbrainvol" \
     -H 'accept: application/json' \
     -H "Authorization: Bearer $API_KEY" \
     -H 'Content-Type: application/json' \
@@ -22,8 +24,8 @@ tail -n +2 "$CSV_FILE" | while IFS=, read -r mriid gender age brain_vol ventricu
       \"age\": $age,
       \"ventricular_vol\": $ventricular_vol,
       \"brain_vol\": $brain_vol,
-      \"bucket_name\": \"testniisandrea\",
-      \"bucket_folder\": \"ldm\"
+      \"bucket_name\": $BUCKET_NAME,
+      \"bucket_folder\": $BUCKET_FOLDER
     }"
 done
 
